@@ -1,0 +1,5 @@
+string filename
+---
+bool ok
+string message
+string error

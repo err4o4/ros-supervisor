@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="supervisor_node" pkg="ros_supervisor" type="supervisor_node.py" output="screen"/>
+</launch>

@@ -1,0 +1,6 @@
+string node
+int32 pid
+---
+bool ok
+string message
+string error

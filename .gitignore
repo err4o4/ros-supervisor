@@ -1,0 +1,101 @@
+# ROS build artifacts
+build/
+devel/
+install/
+.catkin_workspace
+.catkin_tools/
+
+# ROS logs
+*.log
+.ros/
+
+# Bag files (rosbag recordings)
+*.bag
+*.bag.active
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+*.egg
+
+# IDE - VSCode
+.vscode/
+*.code-workspace
+
+# IDE - PyCharm
+.idea/
+*.iml
+
+# IDE - Eclipse
+.project
+.cproject
+.pydevproject
+.settings/
+
+# OS - macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# OS - Linux
+*~
+.directory
+.Trash-*
+
+# OS - Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Generated message/service files
+**/msg_gen/
+**/srv_gen/
+**/msg/_*.py
+**/srv/_*.py
+
+# Compiled
+*.o
+*.a
+*.so
+*.dylib
+*.out
+
+# Temporary files
+*.swp
+*.swo
+*.tmp
+.*.sw?
+
+# Environment
+.env
+.venv
+venv/
+ENV/
+env/
+
+# Documentation build
+docs/_build/
+*.pdf
+
+# Qt
+*.pro.user
+*.autosave
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# Test coverage
+.coverage
+htmlcov/
