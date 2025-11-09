@@ -28,7 +28,7 @@ class SupervisorNode:
 
         # Register unified command service
         self.command_srv = rospy.Service(
-            'supervisor/command',
+            '/supervisor/command',
             Command,
             self.command_handler.handle_command
         )

@@ -20,7 +20,7 @@ class StatusPublisher:
         self.system_monitor = system_monitor
 
         # Publisher for unified status
-        self.pub = rospy.Publisher('supervisor/status', SupervisorStatus, queue_size=10)
+        self.pub = rospy.Publisher('/supervisor/status', SupervisorStatus, queue_size=10)
 
         # Track supervisor start time
         self.start_time = rospy.Time.now()
@@ -118,13 +118,20 @@ class StatusPublisher:
                 recording.recording_time = rospy.Duration(0)
 
             # Get file size
+            # Note: rosbag creates .bag.active while recording, then renames to .bag when done
             try:
-                if self.recorder_manager.recording_filepath and \
-                   os.path.exists(self.recorder_manager.recording_filepath):
-                    recording.size_bytes = os.path.getsize(self.recorder_manager.recording_filepath)
+                if self.recorder_manager.recording_filepath:
+                    active_filepath = self.recorder_manager.recording_filepath + ".active"
+                    if os.path.exists(active_filepath):
+                        recording.size_bytes = os.path.getsize(active_filepath)
+                    elif os.path.exists(self.recorder_manager.recording_filepath):
+                        recording.size_bytes = os.path.getsize(self.recorder_manager.recording_filepath)
+                    else:
+                        recording.size_bytes = 0
                 else:
                     recording.size_bytes = 0
-            except:
+            except Exception as e:
+                rospy.logdebug(f"Error getting recording file size: {e}")
                 recording.size_bytes = 0
 
             # Topics (we don't store this currently, so leave empty)
