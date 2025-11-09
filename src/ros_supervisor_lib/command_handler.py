@@ -198,7 +198,6 @@ class CommandHandler:
             if self.recorder_manager.recording_process.poll() is not None:
                 resp.ok = False
                 resp.message = "Recording process already terminated"
-                self.recorder_manager.publish_recording_status(stopped=True)
                 self.recorder_manager.recording_process = None
                 self.recorder_manager.recording_filename = None
                 self.recorder_manager.recording_filepath = None
@@ -238,9 +237,6 @@ class CommandHandler:
             resp.data.recording_size_bytes = size_bytes
 
             rospy.loginfo(f"Recording stopped: {self.recorder_manager.recording_filename}")
-
-            # Publish stopped status before clearing
-            self.recorder_manager.publish_recording_status(stopped=True)
 
             # Clear recording state
             self.recorder_manager.recording_process = None
