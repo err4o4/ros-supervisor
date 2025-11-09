@@ -9,22 +9,29 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
   FILES
+  # Base types
   NodeInfo.msg
-  NodeList.msg
   KeyValue.msg
-  FileRecord.msg
-  FileRecordList.msg
-  RecordingStatus.msg
-  SystemStatus.msg
+  # Nested status messages
+  CpuStatus.msg
+  RamStatus.msg
+  StorageStatus.msg
+  SystemResources.msg
+  RecordingFile.msg
+  RecordingsStatus.msg
+  NodesStatus.msg
+  SupervisorHealth.msg
+  RecordingStatusNew.msg
+  # Command messages
+  CommandParams.msg
+  CommandData.msg
+  # Main status message
+  SupervisorStatus.msg
 )
 
 add_service_files(
   FILES
-  StartNode.srv
-  StopNode.srv
-  DeleteRecording.srv
-  StartRecording.srv
-  StopRecording.srv
+  Command.srv
 )
 
 catkin_python_setup()

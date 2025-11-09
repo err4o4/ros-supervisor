@@ -1,0 +1,8 @@
+# Request
+string action
+CommandParams params
+---
+# Response
+bool ok
+string message
+CommandData data

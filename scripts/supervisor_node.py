@@ -2,11 +2,13 @@
 
 import rospy
 from ros_supervisor_lib import NodesManager, RecorderManager, SystemMonitor
-from ros_supervisor.srv import StartNode, StopNode, DeleteRecording, StartRecording, StopRecording
+from ros_supervisor_lib.command_handler import CommandHandler
+from ros_supervisor_lib.status_publisher import StatusPublisher
+from ros_supervisor.srv import Command
 
 
 class SupervisorNode:
-    """Main supervisor node that coordinates node and recorder management"""
+    """Main supervisor node with unified command and status interfaces"""
 
     def __init__(self):
         rospy.init_node('supervisor_node')
@@ -16,32 +18,29 @@ class SupervisorNode:
         self.recorder_manager = RecorderManager(data_folder='/root/data')
         self.system_monitor = SystemMonitor()
 
-        # Register node management services
-        self.start_srv = rospy.Service('supervisor/actions/start_node', StartNode, self.nodes_manager.handle_start_node)
-        self.stop_srv = rospy.Service('supervisor/actions/stop_node', StopNode, self.nodes_manager.handle_stop_node)
+        # Initialize unified handler and publisher
+        self.command_handler = CommandHandler(self.nodes_manager, self.recorder_manager)
+        self.status_publisher = StatusPublisher(
+            self.nodes_manager,
+            self.recorder_manager,
+            self.system_monitor
+        )
 
-        # Register recording management services
-        self.delete_srv = rospy.Service('supervisor/actions/delete_recording', DeleteRecording, self.recorder_manager.handle_delete_recording)
-        self.start_rec_srv = rospy.Service('supervisor/actions/start_recording', StartRecording, self.recorder_manager.handle_start_recording)
-        self.stop_rec_srv = rospy.Service('supervisor/actions/stop_recording', StopRecording, self.recorder_manager.handle_stop_recording)
+        # Register unified command service
+        self.command_srv = rospy.Service(
+            'supervisor/command',
+            Command,
+            self.command_handler.handle_command
+        )
 
-        rospy.loginfo("Supervisor node started")
+        rospy.loginfo("Supervisor node started with unified interfaces")
 
     def run(self):
-        """Main loop - publish monitoring data every second"""
+        """Main loop - publish unified status every second"""
         rate = rospy.Rate(1)  # 1 Hz
         while not rospy.is_shutdown():
-            # Publish node monitoring data
-            self.nodes_manager.publish_nodes()
-
-            # Publish file list
-            self.recorder_manager.publish_files()
-
-            # Always publish recording status (includes disk space)
-            self.recorder_manager.publish_recording_status()
-
-            # Publish system status (CPU and RAM)
-            self.system_monitor.publish_system_status()
+            # Publish unified supervisor status
+            self.status_publisher.publish_status()
 
             rate.sleep()
 
