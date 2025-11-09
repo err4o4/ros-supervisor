@@ -1,7 +1,0 @@
-string package
-string launch_file
-KeyValue[] args
----
-bool ok
-int32 roslaunch_pid
-NodeInfo[] nodes

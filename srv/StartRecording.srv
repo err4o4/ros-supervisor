@@ -1,6 +1,0 @@
-string[] topics
----
-bool ok
-string message
-string error
-string filename

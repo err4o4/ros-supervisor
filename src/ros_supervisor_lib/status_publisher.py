@@ -155,20 +155,12 @@ class StatusPublisher:
 
         files = self.recorder_manager.get_files_in_data_folder()
 
-        # Convert from FileRecord to RecordingFile format
-        recording_files = []
-        total_size = 0
-        for file in files:
-            rec_file = RecordingFile()
-            rec_file.name = file.name
-            rec_file.size_bytes = file.size
-            rec_file.created = file.created
-            recording_files.append(rec_file)
-            total_size += file.size
+        # Calculate total size
+        total_size = sum(file.size_bytes for file in files)
 
-        recordings_status.count = len(recording_files)
+        recordings_status.count = len(files)
         recordings_status.total_size_bytes = total_size
-        recordings_status.list = recording_files
+        recordings_status.list = files
 
         return recordings_status
 
