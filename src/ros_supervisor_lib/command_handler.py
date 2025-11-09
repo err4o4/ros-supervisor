@@ -61,7 +61,8 @@ class CommandHandler:
             # Start node using nodes manager
             import subprocess
             rospy.loginfo(f"Starting: {' '.join(cmd)}")
-            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # Redirect output to DEVNULL to prevent pipe buffer from filling up and freezing
+            process = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
             # Store process
             self.nodes_manager.launched_processes[process.pid] = process
@@ -160,8 +161,9 @@ class CommandHandler:
 
             # Start recording process
             rospy.loginfo(f"Starting recording: {' '.join(cmd)}")
+            # Redirect output to DEVNULL to prevent pipe buffer from filling up and freezing
             self.recorder_manager.recording_process = subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
             self.recorder_manager.recording_filename = filename
             self.recorder_manager.recording_filepath = filepath
